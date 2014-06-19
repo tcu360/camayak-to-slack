@@ -15,13 +15,13 @@ var Camayak = require('./camayak');
 
 // Make sure the required environmental variables are set
 if(!process.env.SLACK_HOOK_URL) {
-	throw new Error('The Slack Webhook URL is required.');
+	console.error('The Slack Webhook URL is required.');
 }
 if(!process.env.CAMAYAK_API_KEY && !process.env.CAMAYAK_SUBDOMAIN && !process.env.CAMAYAK_API_SECRET) {
-	throw new Error('The Camayak API key, shared secret and subdomain are required.');
+	console.error('The Camayak API key, shared secret and subdomain are required.');
 }
 if(!process.env.HEROKU_URL) {
-	throw new Error('The Heroku URL is required.');
+	console.error('The Heroku URL is required.');
 }
 
 var slack = new Slack();
@@ -38,13 +38,13 @@ app.use(logfmt.requestLogger());
 
 app.use(bodyParser.json());
 app.post('/', function(req, res) {
-	var signature = req.get('Camayak-Signature');
 	var eventType = req.param('event');
 	if(eventType == 'validate') {
 		res.set('Content-Type', 'text/plain');
 		res.send('pong', 200);
 	}
 	else if(eventType == 'publish') {
+		var signature = req.get('Camayak-Signature');
 		if(camayak.signature() == signature) { // TODO: Validate the shared secret here
 			var resource = req.param('resource_uri');
 			var story = new Camayak.Story(camayak, resource);
