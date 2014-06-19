@@ -20,6 +20,9 @@ if(!process.env.SLACK_HOOK_URL) {
 if(!process.env.CAMAYAK_API_KEY && !process.env.CAMAYAK_SUBDOMAIN && !process.env.CAMAYAK_API_SECRET) {
 	throw new Error('The Camayak API key, shared secret and subdomain are required.');
 }
+if(!process.env.HEROKU_URL) {
+	throw new Error('The Heroku URL is required.');
+}
 
 var slack = new Slack();
 

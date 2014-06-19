@@ -13,7 +13,7 @@ Slack.prototype.postText = function(msg) {
 		"channel": this.channel,
 		"username": "Camayak",
 		"text": msg,
-		"icon_url": "http://vast-plateau-7932.herokuapp.com/camayak.png"
+		"icon_url": process.env.HEROKU_URL + "/camayak.png"
 	};
 
 	this.send(payload);
@@ -29,7 +29,7 @@ Slack.prototype.postRich = function(msg) {
 	var payload = {
 		"channel": this.channel,
 		"username": "Camayak",
-		"icon_url": "http://vast-plateau-7932.herokuapp.com/camayak.png",
+		"icon_url": process.env.HEROKU_URL + "/camayak.png",
 		"attachments": [{
 			"fallback": msg.fallback,
 			"pretext": msg.pretext,
