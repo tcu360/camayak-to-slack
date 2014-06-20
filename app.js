@@ -45,7 +45,7 @@ app.post('/', function(req, res) {
 	}
 	else if(eventType == 'publish') {
 		var signature = req.get('Camayak-Signature');
-		if(camayak.signature() == signature) { // TODO: Validate the shared secret here
+		if(camayak.verifySignature(signature)) {
 			var resource = req.param('resource_uri');
 			var story = new Camayak.Story(camayak, resource);
 			story.on('ready', function() {

@@ -12,12 +12,23 @@ function API(key, secret, subdomain) {
 
 // Method to generate a signature for API request signing
 // and Webhook verification
-API.prototype.signature = function() {
-	date = Math.floor(Date.now() / 1000).toString();
+API.prototype.signature = function(i) {
+	i = i || 0;
+	date = Math.floor(Date.now() / 1000 + i).toString();
 	hmac = crypto.createHmac("sha1", this.secret);
 	hmac.update(date);
 	hmac.update(this.key);
 	return hmac.digest("hex");
+}
+
+// Verify the signature by calculating a series of hashes,
+// then verify against the series
+API.prototype.verifySignature = function(signature) {
+	var hashes = [this.signature()];
+	for(var i = -5; i <= 5; i++) {
+		hashes.push(this.signature(i));
+	}
+	return _.contains(hashes, signature);
 }
 
 // Story class ...
