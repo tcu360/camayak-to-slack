@@ -79,13 +79,19 @@ Story.prototype.byline = function() {
 };
 
 // Return a comma-separated list of media elements
-// ex: 3 images, 1 video
+// ex: 3 images, 2 pdfs, 1 video
 Story.prototype.media = function() {
 	if(this.resource.media) {
 		return _.chain(this.resource.media)
 			.pluck('type')
 			.countBy(function(el) {
-				return el.split('/')[0] + 's';
+				var mime = el.split('/');
+				if(mime[0] == 'application') {
+					return mime[1] + 's';
+				}
+				else {
+					return mime[0] + 's';
+				}
 			})
 			.map(function(value, key) {
 				return value + ' ' + key;
